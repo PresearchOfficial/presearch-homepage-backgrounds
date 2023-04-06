@@ -1,0 +1,32 @@
+name: Sync images with S3
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Normalize names
+      run: |
+        for file in images/*.jpg; do
+          md5=$(md5sum "$file" | cut -d' ' -f1)
+          extension="${file##*.}"
+          filename="${file%.*}"
+          mv "$file" "images/c_$md5.$extension"
+          mv "$filename.json" "images/c_$md5.json"
+        done
+        ls images
+
+    - uses: jakejarvis/s3-sync-action@master
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-east-2'
+        SOURCE_DIR: 'images'
+        DEST_DIR: 'backgrounds'

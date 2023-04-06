@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    name: Verify images & metadata
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get new images
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: images/*.{jpg}
+
+      - name: Check if all the images have the associated metadata file
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            metadataFile="${file%.*}.json"
+
+            # check if file exists
+            if [ ! -f "$metadataFile" ]; then
+                echo "::error file={$metadataFile}::Metadata file missing. Metadata $metadataFile file does not exist"
+                exit 1
+            fi
+          done
