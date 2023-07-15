@@ -31,6 +31,7 @@ An example metadate file would look like:
     "license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "source": "Generated with Stable Diffusion",
     "url": "https://www.john-doe-digital-art-gallery.com/sunset"
+    "categories": ["Landscape", "Sunset"]
 }
 ```
 
