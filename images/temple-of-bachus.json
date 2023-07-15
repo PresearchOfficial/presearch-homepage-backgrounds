@@ -3,7 +3,5 @@
     "author": "Scott McKay",
     "license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "source": "High Dynamic Range",
-    "manufacturer": "Canon",
-    "model": "EOS 77D",
-    "lens": "Canon EF-S10-18mm f/4.5-5.6 IS STM"
+    "categories": ["landmark", "ruins", "lebanon", "roman", "architecture", "temple"]
 }
